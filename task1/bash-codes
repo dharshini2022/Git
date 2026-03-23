@@ -1,0 +1,84 @@
+1. Create a folder git_learning and initialize a Git repository.
+mkdir git_learning
+cd git_learning
+git init
+
+2. Create index.html and styles.css. Stage and commit them with the message "Initial project setup".
+touch index.html styles.css
+echo "sample content" > index.html
+git add .
+git commit -m "Initial project setup"
+
+3. Create a file named .env and a .gitignore file. Configure the ignore file so that Git stops tracking all .log files.
+touch .env .gitignore
+echo "*.log" > .gitignore
+git add .gitignore
+git commit -m "Added .gitignore"
+
+4. Run a status check to prove the log file is invisible to Git.
+touch sample.log
+git status
+
+Branching
+1. Create and switch to a new branch named feature-about.
+git checkout -b feature-about
+
+2. Add an about.html file. Commit it.
+touch about.html
+git add about.html
+git commit -m "added about.html"
+
+3. Switch back to main and merge feature-about into it.
+git branch -m master main
+git checkout main
+git merge feature-about
+
+4. Intentionally delete the content of index.html. Use a Git command to restore the file to its last committed state without making a new commit.
+echo "" > index.html
+git restore index.html
+
+5. In index.html create a h1 tag and add "Git learning".
+echo "<h1>Git learning</h1>" > index.html
+git add index.html
+git commit -m "index.html v1"
+
+6. In same file edit the that h1 tag to "Done with git".
+echo "<h1>Done with git</h1>" > index.html
+git add index.html
+git commit -m "index.html v2"
+
+7. Now i want the Git learning again, Use git revert to undo that commit by creating a "correction" commit.
+git revert HEAD
+git add index.html
+git commit -m "correction"
+
+Conflicts:
+1. While on main, change the <h1> tag in index.html to "Learning GIT". Commit it.
+echo "<h1>Learning git</h1>" > index.html
+git add index.html
+git commit -m "index.html v3"
+
+2. Create a branch fix-title from the previous commit. Change that same <h1> tag to "Completed the git". Commit it.
+git checkout -b fix-title
+echo "<h1>Completed the git</h1>" > index.html
+git add index.html
+git commit -m "index.html in fix-title branch"
+
+3. Merge fix-title into main. Manually resolve the conflict in the editor and finalize the merge.
+git checkout main
+git merge fix-title
+<<<<HEAD
+Learning git
+==========
+Completed the git
+>>>>>>fix-title
+
+git add index.html
+git commit -m "Merged conflicts"
+
+4. Start typing a "Contact" section in index.html but do not commit. Stash these changes to clear your workspace.
+echo "<section>
+  <h2>Contact</h2>
+  <p>Email: example@email.com</p>
+</section>" > index.html
+git stash
